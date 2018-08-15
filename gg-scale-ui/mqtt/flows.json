@@ -79,7 +79,7 @@
             }
         },
         "site": {
-            "name": "GG-SCALE",
+            "name": "GG-SCALE MQTT",
             "hideToolbar": "false",
             "allowSwipe": "false",
             "dateFormat": "DD/MM/YYYY",
@@ -195,7 +195,7 @@
         "type": "function",
         "z": "b2c87d64.2d69",
         "name": "Get Weight Value",
-        "func": "var oldDate = context.get('timestamp') || 0;\nvar newDate = new Date();\ncontext.set('timestamp', newDate);\nvar deltatT = newDate.getTime() - oldDate.getTime();\nvar dateMsg = {'topic':'interval', 'payload':deltatT};\nglobal.set('weight',msg.payload);\nvar newMsg = \n{\n    'topic':'validData',\n    'payload':true\n}\nif (msg.payload.unit.trim().length < 1) newMsg.payload = false;\nreturn [{'topic':msg.payload.unit, 'payload':msg.payload.value},newMsg, dateMsg];",
+        "func": "var oldDate = context.get('timestamp') || 0;\nvar newDate = new Date();\ncontext.set('timestamp', newDate);\nvar deltatT = newDate.getTime() - oldDate.getTime();\nvar dateMsg = {'topic':'interval', 'payload':deltatT};\nglobal.set('weight',msg.payload);\nvar newMsg = \n{\n    'topic':'validData',\n    'payload':msg.payload.validData\n}\nreturn [{'topic':msg.payload.unit, 'payload':msg.payload.value},newMsg, dateMsg];",
         "outputs": 3,
         "noerr": 0,
         "x": 470,
@@ -291,7 +291,7 @@
         "label": "Valid Data",
         "format": "<font color={{(msg.payload == false) ? 'red' : 'lime'}} size=\"6\" ><i class=\"fa fa-circle\"></i></font>",
         "layout": "row-center",
-        "x": 720,
+        "x": 730,
         "y": 120,
         "wires": []
     },
