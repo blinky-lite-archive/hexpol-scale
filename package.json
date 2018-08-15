@@ -21,6 +21,7 @@
   "homepage": "https://github.com/QooNet/gg-scale-ioc#readme",
   "dependencies": {
     "node-red": "^0.18.4",
+    "node-red-contrib-opcua": "^0.2.31",
     "node-red-dashboard": "^2.8.2",
     "node-red-node-serialport": "~0.6.5"
   }

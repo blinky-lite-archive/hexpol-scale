@@ -154,13 +154,20 @@
         "order": 1
     },
     {
+        "id": "8c75b220.c4295",
+        "type": "OpcUa-Endpoint",
+        "z": "465cfd27.107674",
+        "endpoint": "opc.tcp://blinky-lite-02.local:4334/UA/gg-scale-server",
+        "login": false
+    },
+    {
         "id": "c808ce9.a7f7d3",
         "type": "serial out",
         "z": "465cfd27.107674",
         "name": "gg-scale-01",
         "serial": "43d1b8d2.ba5798",
-        "x": 660,
-        "y": 160,
+        "x": 670,
+        "y": 260,
         "wires": []
     },
     {
@@ -189,8 +196,8 @@
         "crontab": "",
         "once": false,
         "onceDelay": 0.1,
-        "x": 110,
-        "y": 160,
+        "x": 120,
+        "y": 260,
         "wires": [
             [
                 "820d6a96.be4928"
@@ -205,8 +212,8 @@
         "func": "var buffer = new Buffer([0x1b, 0x70]);\nreturn {'topic':'print','payload':buffer};\n",
         "outputs": 1,
         "noerr": 0,
-        "x": 470,
-        "y": 160,
+        "x": 480,
+        "y": 260,
         "wires": [
             [
                 "c808ce9.a7f7d3"
@@ -218,14 +225,26 @@
         "type": "function",
         "z": "465cfd27.107674",
         "name": "Read Weight",
-        "func": "var dataString = msg.payload;\nvar sign = +1;\nif (dataString.substring(0,1) == '-') sign = -1;\nvar weight = sign * Number(dataString.substring(2,9));\nvar unit = dataString.substring(9,12);\nvar newMsg = {'topic':'weight','payload':{'value':weight,'unit':unit, 'timestamp': new Date().getTime()}};\nflow.set('scaleReady',true);\nreturn newMsg;",
-        "outputs": 1,
+        "func": "var dataString = msg.payload;\nvar sign = +1;\nif (dataString.substring(0,1) == '-') sign = -1;\nvar weight = sign * Number(dataString.substring(2,9));\nvar unit = dataString.substring(9,12).trim();\nvar validData = true;\nvar timeStamp = new Date().getTime();\nif (unit.length < 1) validData = false;\nvar newMsg = {'topic':'weight','payload':{'value':weight,'unit':unit, 'validData':validData, 'timestamp':timeStamp}};\nflow.set('scaleReady',true);\nreturn [\n    newMsg,\n    {'topic':'weight','payload':weight},\n    {'topic':'validData','payload':validData},\n    {'topic':'timeStamp','payload':timeStamp.toString()},\n    {'topic':'unit','payload':unit},\n    ];",
+        "outputs": 5,
         "noerr": 0,
         "x": 310,
         "y": 60,
         "wires": [
             [
                 "95e2b18c.fd503"
+            ],
+            [
+                "2246d52d.43711a"
+            ],
+            [
+                "e27d6512.0acc68"
+            ],
+            [
+                "d5e561ae.dca8f"
+            ],
+            [
+                "bb5e1798.cfd098"
             ]
         ]
     },
@@ -237,8 +256,8 @@
         "func": "var buffer = new Buffer([0x1b, 0x72]);\nreturn {'topic':'print','payload':buffer};\n",
         "outputs": 1,
         "noerr": 0,
-        "x": 390,
-        "y": 220,
+        "x": 400,
+        "y": 320,
         "wires": [
             []
         ]
@@ -251,8 +270,8 @@
         "func": "var buffer = new Buffer([0x1b, 0x73]);\nreturn {'topic':'print','payload':buffer};\n",
         "outputs": 1,
         "noerr": 0,
-        "x": 390,
-        "y": 340,
+        "x": 400,
+        "y": 440,
         "wires": [
             [
                 "c808ce9.a7f7d3"
@@ -267,8 +286,8 @@
         "func": "var buffer = new Buffer([0x1b, 0x74]);\nreturn {'topic':'print','payload':buffer};\n",
         "outputs": 1,
         "noerr": 0,
-        "x": 410,
-        "y": 460,
+        "x": 420,
+        "y": 560,
         "wires": [
             [
                 "c808ce9.a7f7d3"
@@ -284,8 +303,8 @@
         "qos": "0",
         "retain": "false",
         "broker": "fe7df95e.65a988",
-        "x": 550,
-        "y": 60,
+        "x": 590,
+        "y": 20,
         "wires": []
     },
     {
@@ -296,8 +315,8 @@
         "topic": "gg-scale/01/tare",
         "qos": "0",
         "broker": "fe7df95e.65a988",
-        "x": 120,
-        "y": 460,
+        "x": 130,
+        "y": 560,
         "wires": [
             [
                 "442d2670.a01948"
@@ -312,8 +331,8 @@
         "topic": "gg-scale/01/toggleUnits",
         "qos": "0",
         "broker": "fe7df95e.65a988",
-        "x": 150,
-        "y": 340,
+        "x": 160,
+        "y": 440,
         "wires": [
             [
                 "f03cc237.efcc6"
@@ -328,8 +347,8 @@
         "topic": "gg-scale/01/toggleCount",
         "qos": "0",
         "broker": "fe7df95e.65a988",
-        "x": 150,
-        "y": 220,
+        "x": 160,
+        "y": 320,
         "wires": [
             [
                 "636fe113.a9ece"
@@ -348,8 +367,8 @@
         "crontab": "",
         "once": false,
         "onceDelay": 0.1,
-        "x": 130,
-        "y": 280,
+        "x": 140,
+        "y": 380,
         "wires": [
             [
                 "636fe113.a9ece"
@@ -368,8 +387,8 @@
         "crontab": "",
         "once": false,
         "onceDelay": 0.1,
-        "x": 130,
-        "y": 400,
+        "x": 140,
+        "y": 500,
         "wires": [
             [
                 "f03cc237.efcc6"
@@ -388,8 +407,8 @@
         "crontab": "",
         "once": false,
         "onceDelay": 0.1,
-        "x": 110,
-        "y": 520,
+        "x": 120,
+        "y": 620,
         "wires": [
             [
                 "442d2670.a01948"
@@ -408,8 +427,8 @@
         "crontab": "",
         "once": true,
         "onceDelay": 0.1,
-        "x": 110,
-        "y": 580,
+        "x": 120,
+        "y": 680,
         "wires": [
             [
                 "1c9b9184.e3b7ce"
@@ -424,8 +443,8 @@
         "func": "flow.set('scaleReady',true);\nreturn null;",
         "outputs": 1,
         "noerr": 0,
-        "x": 280,
-        "y": 580,
+        "x": 290,
+        "y": 680,
         "wires": [
             []
         ]
@@ -438,8 +457,8 @@
         "func": "if (!flow.get('scaleReady')) return null;\nflow.set('scaleReady',false);\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
-        "x": 280,
-        "y": 160,
+        "x": 290,
+        "y": 260,
         "wires": [
             [
                 "3b9f2aae.3ea6c6"
@@ -509,7 +528,7 @@
         "type": "function",
         "z": "b2c87d64.2d69",
         "name": "Get Weight Value",
-        "func": "var oldDate = context.get('timestamp') || 0;\nvar newDate = new Date();\ncontext.set('timestamp', newDate);\nvar deltatT = newDate.getTime() - oldDate.getTime();\nvar dateMsg = {'topic':'interval', 'payload':deltatT};\nglobal.set('weight',msg.payload);\nvar newMsg = \n{\n    'topic':'validData',\n    'payload':true\n}\nif (msg.payload.unit.trim().length < 1) newMsg.payload = false;\nreturn [{'topic':msg.payload.unit, 'payload':msg.payload.value},newMsg, dateMsg];",
+        "func": "var oldDate = context.get('timestamp') || 0;\nvar newDate = new Date();\ncontext.set('timestamp', newDate);\nvar deltatT = newDate.getTime() - oldDate.getTime();\nvar dateMsg = {'topic':'interval', 'payload':deltatT};\nglobal.set('weight',msg.payload);\nvar newMsg = \n{\n    'topic':'validData',\n    'payload':msg.payload.validData\n}\nreturn [{'topic':msg.payload.unit, 'payload':msg.payload.value},newMsg, dateMsg];",
         "outputs": 3,
         "noerr": 0,
         "x": 470,
@@ -605,7 +624,7 @@
         "label": "Valid Data",
         "format": "<font color={{(msg.payload == false) ? 'red' : 'lime'}} size=\"6\" ><i class=\"fa fa-circle\"></i></font>",
         "layout": "row-center",
-        "x": 720,
+        "x": 730,
         "y": 120,
         "wires": []
     },
@@ -649,6 +668,84 @@
         "wires": [
             [],
             []
+        ]
+    },
+    {
+        "id": "2246d52d.43711a",
+        "type": "OpcUa-Item",
+        "z": "465cfd27.107674",
+        "item": "ns=2;s=weight01",
+        "datatype": "Double",
+        "value": "",
+        "name": "gg-scale - weight01",
+        "x": 550,
+        "y": 80,
+        "wires": [
+            [
+                "835c4625.aac498"
+            ]
+        ]
+    },
+    {
+        "id": "835c4625.aac498",
+        "type": "OpcUa-Client",
+        "z": "465cfd27.107674",
+        "endpoint": "8c75b220.c4295",
+        "action": "write",
+        "time": "",
+        "name": "Test server (write items)",
+        "x": 870,
+        "y": 140,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "e27d6512.0acc68",
+        "type": "OpcUa-Item",
+        "z": "465cfd27.107674",
+        "item": "ns=2;s=validData01",
+        "datatype": "Boolean",
+        "value": "",
+        "name": "gg-scale - validData01",
+        "x": 560,
+        "y": 120,
+        "wires": [
+            [
+                "835c4625.aac498"
+            ]
+        ]
+    },
+    {
+        "id": "d5e561ae.dca8f",
+        "type": "OpcUa-Item",
+        "z": "465cfd27.107674",
+        "item": "ns=2;s=timeStamp01",
+        "datatype": "String",
+        "value": "",
+        "name": "gg-scale - timeStamp01",
+        "x": 570,
+        "y": 160,
+        "wires": [
+            [
+                "835c4625.aac498"
+            ]
+        ]
+    },
+    {
+        "id": "bb5e1798.cfd098",
+        "type": "OpcUa-Item",
+        "z": "465cfd27.107674",
+        "item": "ns=2;s=unit01",
+        "datatype": "String",
+        "value": "",
+        "name": "gg-scale - unit01",
+        "x": 550,
+        "y": 200,
+        "wires": [
+            [
+                "835c4625.aac498"
+            ]
         ]
     }
 ]
