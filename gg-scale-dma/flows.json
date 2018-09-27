@@ -120,10 +120,10 @@
         "id": "fe7df95e.65a988",
         "type": "mqtt-broker",
         "z": "",
-        "name": "blinky-lite-02",
-        "broker": "blinky-lite-02.local",
+        "name": "SMC",
+        "broker": "broker.shiftr.io",
         "port": "1883",
-        "clientid": "gg-scale-01-dma",
+        "clientid": "Scale1DMA",
         "usetls": false,
         "compatmode": true,
         "keepalive": "60",
@@ -157,8 +157,27 @@
         "id": "8c75b220.c4295",
         "type": "OpcUa-Endpoint",
         "z": "465cfd27.107674",
-        "endpoint": "opc.tcp://blinky-lite-02.local:4334/UA/gg-scale-server",
+        "endpoint": "opc.tcp://blinky-lite-02.local:4334/SMC",
         "login": true
+    },
+    {
+        "id": "6189d802.3ef1a8",
+        "type": "mqtt-broker",
+        "z": "",
+        "name": "SMC2",
+        "broker": "broker.shiftr.io",
+        "port": "1883",
+        "clientid": "Scale1UI",
+        "usetls": false,
+        "compatmode": true,
+        "keepalive": "60",
+        "cleansession": true,
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": ""
     },
     {
         "id": "c808ce9.a7f7d3",
@@ -166,8 +185,8 @@
         "z": "465cfd27.107674",
         "name": "gg-scale-01",
         "serial": "43d1b8d2.ba5798",
-        "x": 670,
-        "y": 260,
+        "x": 1010,
+        "y": 760,
         "wires": []
     },
     {
@@ -176,8 +195,8 @@
         "z": "465cfd27.107674",
         "name": "gg-scale-01",
         "serial": "43d1b8d2.ba5798",
-        "x": 110,
-        "y": 60,
+        "x": 130,
+        "y": 200,
         "wires": [
             [
                 "269ea255.74ec8e"
@@ -196,8 +215,8 @@
         "crontab": "",
         "once": false,
         "onceDelay": 0.1,
-        "x": 120,
-        "y": 260,
+        "x": 230,
+        "y": 980,
         "wires": [
             [
                 "820d6a96.be4928"
@@ -212,8 +231,8 @@
         "func": "var buffer = new Buffer([0x1b, 0x70]);\nreturn {'topic':'print','payload':buffer};\n",
         "outputs": 1,
         "noerr": 0,
-        "x": 480,
-        "y": 260,
+        "x": 590,
+        "y": 980,
         "wires": [
             [
                 "c808ce9.a7f7d3"
@@ -225,41 +244,28 @@
         "type": "function",
         "z": "465cfd27.107674",
         "name": "Read Weight",
-        "func": "var dataString = msg.payload;\nvar sign = +1;\nif (dataString.substring(0,1) == '-') sign = -1;\nvar weight = sign * Number(dataString.substring(2,9));\nvar unit = dataString.substring(9,12).trim();\nvar validData = true;\nvar timeStamp = new Date().getTime();\nif (unit.length < 1) validData = false;\nvar newMsg = {'topic':'weight','payload':{'value':weight,'unit':unit, 'validData':validData, 'timestamp':timeStamp}};\nflow.set('scaleReady',true);\nreturn [\n    newMsg,\n    {'topic':'weight','payload':weight},\n    {'topic':'validData','payload':validData},\n    {'topic':'timeStamp','payload':timeStamp.toString()},\n    {'topic':'unit','payload':unit},\n    ];",
-        "outputs": 5,
+        "func": "var dataString = msg.payload;\nvar sign = +1;\nif (dataString.substring(0,1) == '-') sign = -1;\nvar weight = sign * Number(dataString.substring(2,9));\nvar unit = dataString.substring(9,12).trim();\nvar validData = true;\nvar timeStamp = new Date().getTime();\nif (unit.length < 1) validData = false;\nflow.set('scaleReady',true);\nreturn [\n    {'topic':'SMC/Scale1/Weight','payload':weight},\n    {'topic':'SMC/Scale1/DataValid','payload':validData},\n    {'topic':'SMC/Scale1/TimeStamp','payload':timeStamp.toString()},\n    {'topic':'SMC/Scale1/Unit','payload':unit},\n    ];",
+        "outputs": 4,
         "noerr": 0,
-        "x": 310,
-        "y": 60,
+        "x": 330,
+        "y": 200,
         "wires": [
             [
-                "95e2b18c.fd503"
-            ],
-            [
+                "95e2b18c.fd503",
                 "2246d52d.43711a"
             ],
             [
+                "6889c255.27c0fc",
                 "e27d6512.0acc68"
             ],
             [
+                "90f26aa4.40d988",
                 "d5e561ae.dca8f"
             ],
             [
+                "d5619903.c3fcd8",
                 "bb5e1798.cfd098"
             ]
-        ]
-    },
-    {
-        "id": "636fe113.a9ece",
-        "type": "function",
-        "z": "465cfd27.107674",
-        "name": "Toggle Count",
-        "func": "var buffer = new Buffer([0x1b, 0x72]);\nreturn {'topic':'print','payload':buffer};\n",
-        "outputs": 1,
-        "noerr": 0,
-        "x": 400,
-        "y": 320,
-        "wires": [
-            []
         ]
     },
     {
@@ -270,8 +276,8 @@
         "func": "var buffer = new Buffer([0x1b, 0x73]);\nreturn {'topic':'print','payload':buffer};\n",
         "outputs": 1,
         "noerr": 0,
-        "x": 400,
-        "y": 440,
+        "x": 550,
+        "y": 620,
         "wires": [
             [
                 "c808ce9.a7f7d3"
@@ -282,12 +288,12 @@
         "id": "442d2670.a01948",
         "type": "function",
         "z": "465cfd27.107674",
-        "name": "Tare",
+        "name": "Zero Scale",
         "func": "var buffer = new Buffer([0x1b, 0x74]);\nreturn {'topic':'print','payload':buffer};\n",
         "outputs": 1,
         "noerr": 0,
-        "x": 420,
-        "y": 560,
+        "x": 550,
+        "y": 860,
         "wires": [
             [
                 "c808ce9.a7f7d3"
@@ -298,12 +304,12 @@
         "id": "95e2b18c.fd503",
         "type": "mqtt out",
         "z": "465cfd27.107674",
-        "name": "",
-        "topic": "gg-scale/01/weight",
+        "name": "Weight",
+        "topic": "",
         "qos": "0",
         "retain": "false",
         "broker": "fe7df95e.65a988",
-        "x": 590,
+        "x": 550,
         "y": 20,
         "wires": []
     },
@@ -312,11 +318,11 @@
         "type": "mqtt in",
         "z": "465cfd27.107674",
         "name": "",
-        "topic": "gg-scale/01/tare",
+        "topic": "SMC/Scale1/ZeroScale",
         "qos": "0",
         "broker": "fe7df95e.65a988",
-        "x": 130,
-        "y": 560,
+        "x": 260,
+        "y": 840,
         "wires": [
             [
                 "442d2670.a01948"
@@ -328,50 +334,14 @@
         "type": "mqtt in",
         "z": "465cfd27.107674",
         "name": "",
-        "topic": "gg-scale/01/toggleUnits",
+        "topic": "SMC/Scale1/ToggleUnit",
         "qos": "0",
         "broker": "fe7df95e.65a988",
-        "x": 160,
-        "y": 440,
+        "x": 260,
+        "y": 620,
         "wires": [
             [
                 "f03cc237.efcc6"
-            ]
-        ]
-    },
-    {
-        "id": "89b611dd.6a5c",
-        "type": "mqtt in",
-        "z": "465cfd27.107674",
-        "name": "",
-        "topic": "gg-scale/01/toggleCount",
-        "qos": "0",
-        "broker": "fe7df95e.65a988",
-        "x": 160,
-        "y": 320,
-        "wires": [
-            [
-                "636fe113.a9ece"
-            ]
-        ]
-    },
-    {
-        "id": "1a68675a.1915d9",
-        "type": "inject",
-        "z": "465cfd27.107674",
-        "name": "toggleCount",
-        "topic": "",
-        "payload": "",
-        "payloadType": "date",
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "x": 140,
-        "y": 380,
-        "wires": [
-            [
-                "636fe113.a9ece"
             ]
         ]
     },
@@ -387,8 +357,8 @@
         "crontab": "",
         "once": false,
         "onceDelay": 0.1,
-        "x": 140,
-        "y": 500,
+        "x": 250,
+        "y": 680,
         "wires": [
             [
                 "f03cc237.efcc6"
@@ -399,7 +369,7 @@
         "id": "9a56c5c.ec47038",
         "type": "inject",
         "z": "465cfd27.107674",
-        "name": "tare",
+        "name": "Zero Scale",
         "topic": "",
         "payload": "",
         "payloadType": "date",
@@ -407,8 +377,8 @@
         "crontab": "",
         "once": false,
         "onceDelay": 0.1,
-        "x": 120,
-        "y": 620,
+        "x": 240,
+        "y": 900,
         "wires": [
             [
                 "442d2670.a01948"
@@ -427,8 +397,8 @@
         "crontab": "",
         "once": true,
         "onceDelay": 0.1,
-        "x": 120,
-        "y": 680,
+        "x": 130,
+        "y": 20,
         "wires": [
             [
                 "1c9b9184.e3b7ce"
@@ -443,8 +413,8 @@
         "func": "flow.set('scaleReady',true);\nreturn null;",
         "outputs": 1,
         "noerr": 0,
-        "x": 290,
-        "y": 680,
+        "x": 320,
+        "y": 20,
         "wires": [
             []
         ]
@@ -457,8 +427,8 @@
         "func": "if (!flow.get('scaleReady')) return null;\nflow.set('scaleReady',false);\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
-        "x": 290,
-        "y": 260,
+        "x": 410,
+        "y": 980,
         "wires": [
             [
                 "3b9f2aae.3ea6c6"
@@ -466,39 +436,156 @@
         ]
     },
     {
-        "id": "7af18fac.1fe3c",
-        "type": "mqtt in",
-        "z": "b2c87d64.2d69",
-        "name": "",
-        "topic": "gg-scale/01/weight",
-        "qos": "0",
-        "broker": "fe7df95e.65a988",
-        "x": 130,
-        "y": 60,
+        "id": "2246d52d.43711a",
+        "type": "OpcUa-Item",
+        "z": "465cfd27.107674",
+        "item": "ns=2;s=Weight",
+        "datatype": "Double",
+        "value": "",
+        "name": "Scale1.Weight",
+        "x": 580,
+        "y": 80,
         "wires": [
             [
-                "d602b2f0.1d035"
+                "835c4625.aac498"
             ]
         ]
     },
     {
-        "id": "d602b2f0.1d035",
+        "id": "835c4625.aac498",
+        "type": "OpcUa-Client",
+        "z": "465cfd27.107674",
+        "endpoint": "8c75b220.c4295",
+        "action": "write",
+        "time": "",
+        "name": "Test server (write items)",
+        "x": 910,
+        "y": 220,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "e27d6512.0acc68",
+        "type": "OpcUa-Item",
+        "z": "465cfd27.107674",
+        "item": "ns=2;s=DataValid",
+        "datatype": "Boolean",
+        "value": "",
+        "name": "Scale1.DataValid",
+        "x": 590,
+        "y": 200,
+        "wires": [
+            [
+                "835c4625.aac498"
+            ]
+        ]
+    },
+    {
+        "id": "d5e561ae.dca8f",
+        "type": "OpcUa-Item",
+        "z": "465cfd27.107674",
+        "item": "ns=2;s=TimeStamp",
+        "datatype": "String",
+        "value": "",
+        "name": "Scale1.TimeStamp",
+        "x": 590,
+        "y": 320,
+        "wires": [
+            [
+                "835c4625.aac498"
+            ]
+        ]
+    },
+    {
+        "id": "bb5e1798.cfd098",
+        "type": "OpcUa-Item",
+        "z": "465cfd27.107674",
+        "item": "ns=2;s=Unit",
+        "datatype": "String",
+        "value": "",
+        "name": "Scale1.Unit",
+        "x": 570,
+        "y": 440,
+        "wires": [
+            [
+                "835c4625.aac498"
+            ]
+        ]
+    },
+    {
+        "id": "6889c255.27c0fc",
+        "type": "mqtt out",
+        "z": "465cfd27.107674",
+        "name": "DataValid",
+        "topic": "",
+        "qos": "0",
+        "retain": "false",
+        "broker": "fe7df95e.65a988",
+        "x": 560,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "90f26aa4.40d988",
+        "type": "mqtt out",
+        "z": "465cfd27.107674",
+        "name": "TimeStamp",
+        "topic": "",
+        "qos": "0",
+        "retain": "false",
+        "broker": "fe7df95e.65a988",
+        "x": 570,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "d5619903.c3fcd8",
+        "type": "mqtt out",
+        "z": "465cfd27.107674",
+        "name": "Unit",
+        "topic": "",
+        "qos": "0",
+        "retain": "false",
+        "broker": "fe7df95e.65a988",
+        "x": 550,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "47b583fe.44e5dc",
+        "type": "mqtt in",
+        "z": "b2c87d64.2d69",
+        "name": "",
+        "topic": "SMC/Scale1/Weight",
+        "qos": "0",
+        "broker": "6189d802.3ef1a8",
+        "x": 150,
+        "y": 80,
+        "wires": [
+            [
+                "305469b9.b090f6"
+            ]
+        ]
+    },
+    {
+        "id": "305469b9.b090f6",
         "type": "json",
         "z": "b2c87d64.2d69",
         "name": "",
         "property": "payload",
         "action": "",
         "pretty": false,
-        "x": 290,
-        "y": 60,
+        "x": 310,
+        "y": 80,
         "wires": [
             [
-                "fe787b18.e792f8"
+                "3ea0507e.86592"
             ]
         ]
     },
     {
-        "id": "6059660e.b5b7d8",
+        "id": "c9f6f3f2.f9ab2",
         "type": "ui_gauge",
         "z": "b2c87d64.2d69",
         "name": "Weight",
@@ -507,7 +594,7 @@
         "width": 0,
         "height": 0,
         "gtype": "gage",
-        "title": "{{msg.topic}}",
+        "title": "{{msg.label}}",
         "label": "",
         "format": "{{value}}",
         "min": "-300",
@@ -519,33 +606,12 @@
         ],
         "seg1": "-150",
         "seg2": "150",
-        "x": 710,
-        "y": 40,
+        "x": 750,
+        "y": 60,
         "wires": []
     },
     {
-        "id": "fe787b18.e792f8",
-        "type": "function",
-        "z": "b2c87d64.2d69",
-        "name": "Get Weight Value",
-        "func": "var oldDate = context.get('timestamp') || 0;\nvar newDate = new Date();\ncontext.set('timestamp', newDate);\nvar deltatT = newDate.getTime() - oldDate.getTime();\nvar dateMsg = {'topic':'interval', 'payload':deltatT};\nglobal.set('weight',msg.payload);\nvar newMsg = \n{\n    'topic':'validData',\n    'payload':msg.payload.validData\n}\nreturn [{'topic':msg.payload.unit, 'payload':msg.payload.value},newMsg, dateMsg];",
-        "outputs": 3,
-        "noerr": 0,
-        "x": 470,
-        "y": 60,
-        "wires": [
-            [
-                "6059660e.b5b7d8",
-                "14a84546.297b0b"
-            ],
-            [
-                "a19e9679.89a8f8"
-            ],
-            []
-        ]
-    },
-    {
-        "id": "58160a91.897894",
+        "id": "501e3f65.e9cec",
         "type": "ui_template",
         "z": "b2c87d64.2d69",
         "group": "762d27e6.db88d8",
@@ -557,29 +623,29 @@
         "storeOutMessages": false,
         "fwdInMessages": false,
         "templateScope": "local",
-        "x": 110,
-        "y": 140,
+        "x": 150,
+        "y": 400,
         "wires": [
             [
-                "287116df.9ab4ba"
+                "bfb9fe7d.2dfa"
             ]
         ]
     },
     {
-        "id": "287116df.9ab4ba",
+        "id": "bfb9fe7d.2dfa",
         "type": "mqtt out",
         "z": "b2c87d64.2d69",
         "name": "",
-        "topic": "gg-scale/01/toggleUnits",
+        "topic": "SMC/Scale1/ToggleUnit",
         "qos": "0",
         "retain": "false",
-        "broker": "fe7df95e.65a988",
-        "x": 330,
-        "y": 140,
+        "broker": "6189d802.3ef1a8",
+        "x": 370,
+        "y": 400,
         "wires": []
     },
     {
-        "id": "4c94c304.ba005c",
+        "id": "42f6ff50.6e9dc",
         "type": "ui_template",
         "z": "b2c87d64.2d69",
         "group": "762d27e6.db88d8",
@@ -591,29 +657,29 @@
         "storeOutMessages": false,
         "fwdInMessages": false,
         "templateScope": "local",
-        "x": 110,
-        "y": 200,
+        "x": 150,
+        "y": 460,
         "wires": [
             [
-                "804a48db.900398"
+                "6eff974c.eed5c8"
             ]
         ]
     },
     {
-        "id": "804a48db.900398",
+        "id": "6eff974c.eed5c8",
         "type": "mqtt out",
         "z": "b2c87d64.2d69",
         "name": "",
-        "topic": "gg-scale/01/tare",
+        "topic": "SMC/Scale1/ZeroScale",
         "qos": "0",
         "retain": "false",
-        "broker": "fe7df95e.65a988",
-        "x": 360,
-        "y": 200,
+        "broker": "6189d802.3ef1a8",
+        "x": 370,
+        "y": 460,
         "wires": []
     },
     {
-        "id": "a19e9679.89a8f8",
+        "id": "27180c01.cb17f4",
         "type": "ui_text",
         "z": "b2c87d64.2d69",
         "group": "762d27e6.db88d8",
@@ -624,12 +690,12 @@
         "label": "Valid Data",
         "format": "<font color={{(msg.payload == false) ? 'red' : 'lime'}} size=\"6\" ><i class=\"fa fa-circle\"></i></font>",
         "layout": "row-center",
-        "x": 730,
-        "y": 120,
+        "x": 770,
+        "y": 200,
         "wires": []
     },
     {
-        "id": "14a84546.297b0b",
+        "id": "5a46f743.369c28",
         "type": "ui_chart",
         "z": "b2c87d64.2d69",
         "name": "Time chart",
@@ -663,88 +729,255 @@
             "#c5b0d5"
         ],
         "useOldStyle": false,
-        "x": 730,
-        "y": 80,
+        "x": 770,
+        "y": 120,
         "wires": [
             [],
             []
         ]
     },
     {
-        "id": "2246d52d.43711a",
-        "type": "OpcUa-Item",
-        "z": "465cfd27.107674",
-        "item": "ns=2;s=weight01",
-        "datatype": "Double",
-        "value": "",
-        "name": "gg-scale - weight01",
-        "x": 550,
-        "y": 80,
+        "id": "53904c38.e0e114",
+        "type": "mqtt in",
+        "z": "b2c87d64.2d69",
+        "name": "",
+        "topic": "SMC/Scale1/DataValid",
+        "qos": "0",
+        "broker": "6189d802.3ef1a8",
+        "x": 160,
+        "y": 200,
         "wires": [
             [
-                "835c4625.aac498"
+                "d7296db5.84083"
             ]
         ]
     },
     {
-        "id": "835c4625.aac498",
+        "id": "d7296db5.84083",
+        "type": "json",
+        "z": "b2c87d64.2d69",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 350,
+        "y": 200,
+        "wires": [
+            [
+                "27180c01.cb17f4"
+            ]
+        ]
+    },
+    {
+        "id": "efe990d1.63ccb",
+        "type": "mqtt in",
+        "z": "b2c87d64.2d69",
+        "name": "",
+        "topic": "SMC/Scale1/Unit",
+        "qos": "0",
+        "broker": "6189d802.3ef1a8",
+        "x": 140,
+        "y": 140,
+        "wires": [
+            [
+                "3ea0507e.86592"
+            ]
+        ]
+    },
+    {
+        "id": "3ea0507e.86592",
+        "type": "function",
+        "z": "b2c87d64.2d69",
+        "name": "Add Unit and Weight",
+        "func": "if (msg.topic == 'SMC/Scale1/Unit')\n{\n    context.set('unit', msg.payload);\n    return null;\n}\nvar unit = context.get('unit');\nif (unit == undefined) unit = ' ';\nreturn {'topic':msg.topic, 'payload':msg.payload, 'label':unit};",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 520,
+        "y": 100,
+        "wires": [
+            [
+                "c9f6f3f2.f9ab2",
+                "5a46f743.369c28"
+            ]
+        ]
+    },
+    {
+        "id": "43e72449.bc9eac",
+        "type": "inject",
+        "z": "465cfd27.107674",
+        "name": "Subscribe ( Interval 1 sec.)",
+        "topic": "",
+        "payload": "1000",
+        "payloadType": "num",
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "",
+        "x": 200,
+        "y": 520,
+        "wires": [
+            [
+                "eecf7885.243d58",
+                "2eef4a37.7d9f26"
+            ]
+        ]
+    },
+    {
+        "id": "eecf7885.243d58",
+        "type": "OpcUa-Item",
+        "z": "465cfd27.107674",
+        "item": "ns=2;s=ToggleUnit",
+        "datatype": "Boolean",
+        "value": "",
+        "name": "Scale1.ToggleUnit",
+        "x": 470,
+        "y": 500,
+        "wires": [
+            [
+                "cf4e31ab.d4202"
+            ]
+        ]
+    },
+    {
+        "id": "cf4e31ab.d4202",
+        "type": "OpcUa-Client",
+        "z": "465cfd27.107674",
+        "endpoint": "8c75b220.c4295",
+        "action": "subscribe",
+        "time": "200",
+        "timeUnit": "ms",
+        "name": "Test server (subscribe items)",
+        "x": 720,
+        "y": 520,
+        "wires": [
+            [
+                "6e54bd82.5ce6c4",
+                "1a848e3.794f772"
+            ]
+        ]
+    },
+    {
+        "id": "6e54bd82.5ce6c4",
+        "type": "debug",
+        "z": "465cfd27.107674",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 950,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "5e5cc7a3.cd9aa8",
+        "type": "function",
+        "z": "465cfd27.107674",
+        "name": "Get Toggle",
+        "func": "if (msg.topic.indexOf('ToggleUnit') > -1)\n{\n    if (msg.payload)\n    {\n        msg.payload = false;\n        return [msg, null];\n    }\n    else\n    {\n        return [null, null];\n    }\n}\nif (msg.topic.indexOf('ZeroScale') > -1)\n{\n    if (msg.payload)\n    {\n        msg.payload = false;\n        return [null, msg];\n    }\n    else\n    {\n        return [null, null];\n    }\n}\nreturn [null, null];",
+        "outputs": 2,
+        "noerr": 0,
+        "x": 230,
+        "y": 760,
+        "wires": [
+            [
+                "6cd2a17.7ae326",
+                "f03cc237.efcc6"
+            ],
+            [
+                "e6cd0f7e.b6fbe",
+                "442d2670.a01948"
+            ]
+        ]
+    },
+    {
+        "id": "6cd2a17.7ae326",
+        "type": "OpcUa-Item",
+        "z": "465cfd27.107674",
+        "item": "ns=2;s=ToggleUnit",
+        "datatype": "Boolean",
+        "value": "",
+        "name": "Scale1.ToggleUnit",
+        "x": 490,
+        "y": 740,
+        "wires": [
+            [
+                "e12bb3ae.5ec6c"
+            ]
+        ]
+    },
+    {
+        "id": "e12bb3ae.5ec6c",
         "type": "OpcUa-Client",
         "z": "465cfd27.107674",
         "endpoint": "8c75b220.c4295",
         "action": "write",
         "time": "",
         "name": "Test server (write items)",
-        "x": 870,
-        "y": 140,
+        "x": 730,
+        "y": 760,
         "wires": [
             []
         ]
     },
     {
-        "id": "e27d6512.0acc68",
+        "id": "2eef4a37.7d9f26",
         "type": "OpcUa-Item",
         "z": "465cfd27.107674",
-        "item": "ns=2;s=validData01",
+        "item": "ns=2;s=ZeroScale",
         "datatype": "Boolean",
         "value": "",
-        "name": "gg-scale - validData01",
-        "x": 560,
-        "y": 120,
+        "name": "Scale1.ZeroScale",
+        "x": 470,
+        "y": 540,
         "wires": [
             [
-                "835c4625.aac498"
+                "cf4e31ab.d4202"
             ]
         ]
     },
     {
-        "id": "d5e561ae.dca8f",
+        "id": "e6cd0f7e.b6fbe",
         "type": "OpcUa-Item",
         "z": "465cfd27.107674",
-        "item": "ns=2;s=timeStamp01",
-        "datatype": "String",
+        "item": "ns=2;s=ZeroScale",
+        "datatype": "Boolean",
         "value": "",
-        "name": "gg-scale - timeStamp01",
-        "x": 570,
-        "y": 160,
+        "name": "Scale1.ZeroScale",
+        "x": 490,
+        "y": 780,
         "wires": [
             [
-                "835c4625.aac498"
+                "e12bb3ae.5ec6c"
             ]
         ]
     },
     {
-        "id": "bb5e1798.cfd098",
-        "type": "OpcUa-Item",
+        "id": "1a848e3.794f772",
+        "type": "link out",
         "z": "465cfd27.107674",
-        "item": "ns=2;s=unit01",
-        "datatype": "String",
-        "value": "",
-        "name": "gg-scale - unit01",
-        "x": 550,
-        "y": 200,
+        "name": "OPCUA Unit and Zero Toggle",
+        "links": [
+            "73bbee36.d4868"
+        ],
+        "x": 895,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "73bbee36.d4868",
+        "type": "link in",
+        "z": "465cfd27.107674",
+        "name": "",
+        "links": [
+            "1a848e3.794f772"
+        ],
+        "x": 95,
+        "y": 760,
         "wires": [
             [
-                "835c4625.aac498"
+                "5e5cc7a3.cd9aa8"
             ]
         ]
     }
