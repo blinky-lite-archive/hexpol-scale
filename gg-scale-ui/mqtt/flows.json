@@ -2,7 +2,7 @@
     {
         "id": "b2c87d64.2d69",
         "type": "tab",
-        "label": "gg-scale-ui-blinky-lite",
+        "label": "Scale1-ui-blinky-lite",
         "disabled": false,
         "info": ""
     },
@@ -99,10 +99,10 @@
         "id": "fe7df95e.65a988",
         "type": "mqtt-broker",
         "z": "",
-        "name": "blinky-lite-02",
-        "broker": "blinky-lite-02.local",
+        "name": "SMC",
+        "broker": "broker.shiftr.io",
         "port": "1883",
-        "clientid": "gg-scale-ui",
+        "clientid": "ScaleUI",
         "usetls": false,
         "compatmode": true,
         "keepalive": "60",
@@ -137,7 +137,7 @@
         "type": "mqtt in",
         "z": "b2c87d64.2d69",
         "name": "",
-        "topic": "gg-scale/01/weight",
+        "topic": "SMC/Scale1/Weight",
         "qos": "0",
         "broker": "fe7df95e.65a988",
         "x": 130,
@@ -160,7 +160,7 @@
         "y": 60,
         "wires": [
             [
-                "fe787b18.e792f8"
+                "22a4dad3.f3ec46"
             ]
         ]
     },
@@ -174,7 +174,7 @@
         "width": 0,
         "height": 0,
         "gtype": "gage",
-        "title": "{{msg.topic}}",
+        "title": "{{msg.label}}",
         "label": "",
         "format": "{{value}}",
         "min": "-300",
@@ -186,30 +186,9 @@
         ],
         "seg1": "-150",
         "seg2": "150",
-        "x": 710,
+        "x": 730,
         "y": 40,
         "wires": []
-    },
-    {
-        "id": "fe787b18.e792f8",
-        "type": "function",
-        "z": "b2c87d64.2d69",
-        "name": "Get Weight Value",
-        "func": "var oldDate = context.get('timestamp') || 0;\nvar newDate = new Date();\ncontext.set('timestamp', newDate);\nvar deltatT = newDate.getTime() - oldDate.getTime();\nvar dateMsg = {'topic':'interval', 'payload':deltatT};\nglobal.set('weight',msg.payload);\nvar newMsg = \n{\n    'topic':'validData',\n    'payload':msg.payload.validData\n}\nreturn [{'topic':msg.payload.unit, 'payload':msg.payload.value},newMsg, dateMsg];",
-        "outputs": 3,
-        "noerr": 0,
-        "x": 470,
-        "y": 60,
-        "wires": [
-            [
-                "6059660e.b5b7d8",
-                "14a84546.297b0b"
-            ],
-            [
-                "a19e9679.89a8f8"
-            ],
-            []
-        ]
     },
     {
         "id": "58160a91.897894",
@@ -224,8 +203,8 @@
         "storeOutMessages": false,
         "fwdInMessages": false,
         "templateScope": "local",
-        "x": 110,
-        "y": 140,
+        "x": 130,
+        "y": 380,
         "wires": [
             [
                 "287116df.9ab4ba"
@@ -237,12 +216,12 @@
         "type": "mqtt out",
         "z": "b2c87d64.2d69",
         "name": "",
-        "topic": "gg-scale/01/toggleUnits",
+        "topic": "SMC/Scale1/ToggleUnit",
         "qos": "0",
         "retain": "false",
         "broker": "fe7df95e.65a988",
-        "x": 330,
-        "y": 140,
+        "x": 350,
+        "y": 380,
         "wires": []
     },
     {
@@ -258,8 +237,8 @@
         "storeOutMessages": false,
         "fwdInMessages": false,
         "templateScope": "local",
-        "x": 110,
-        "y": 200,
+        "x": 130,
+        "y": 440,
         "wires": [
             [
                 "804a48db.900398"
@@ -271,12 +250,12 @@
         "type": "mqtt out",
         "z": "b2c87d64.2d69",
         "name": "",
-        "topic": "gg-scale/01/tare",
+        "topic": "SMC/Scale1/ZeroScale",
         "qos": "0",
         "retain": "false",
         "broker": "fe7df95e.65a988",
-        "x": 360,
-        "y": 200,
+        "x": 350,
+        "y": 440,
         "wires": []
     },
     {
@@ -291,8 +270,8 @@
         "label": "Valid Data",
         "format": "<font color={{(msg.payload == false) ? 'red' : 'lime'}} size=\"6\" ><i class=\"fa fa-circle\"></i></font>",
         "layout": "row-center",
-        "x": 730,
-        "y": 120,
+        "x": 750,
+        "y": 180,
         "wires": []
     },
     {
@@ -330,11 +309,76 @@
             "#c5b0d5"
         ],
         "useOldStyle": false,
-        "x": 730,
-        "y": 80,
+        "x": 750,
+        "y": 100,
         "wires": [
             [],
             []
+        ]
+    },
+    {
+        "id": "c5ac4420.751f58",
+        "type": "mqtt in",
+        "z": "b2c87d64.2d69",
+        "name": "",
+        "topic": "SMC/Scale1/DataValid",
+        "qos": "0",
+        "broker": "fe7df95e.65a988",
+        "x": 140,
+        "y": 180,
+        "wires": [
+            [
+                "bbdfa706.1c5bd8"
+            ]
+        ]
+    },
+    {
+        "id": "bbdfa706.1c5bd8",
+        "type": "json",
+        "z": "b2c87d64.2d69",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 330,
+        "y": 180,
+        "wires": [
+            [
+                "a19e9679.89a8f8"
+            ]
+        ]
+    },
+    {
+        "id": "a284d3a8.623b",
+        "type": "mqtt in",
+        "z": "b2c87d64.2d69",
+        "name": "",
+        "topic": "SMC/Scale1/Unit",
+        "qos": "0",
+        "broker": "fe7df95e.65a988",
+        "x": 120,
+        "y": 120,
+        "wires": [
+            [
+                "22a4dad3.f3ec46"
+            ]
+        ]
+    },
+    {
+        "id": "22a4dad3.f3ec46",
+        "type": "function",
+        "z": "b2c87d64.2d69",
+        "name": "Add Unit and Weight",
+        "func": "if (msg.topic == 'SMC/Scale1/Unit')\n{\n    context.set('unit', msg.payload);\n    return null;\n}\nvar unit = context.get('unit');\nif (unit == undefined) unit = ' ';\nreturn {'topic':msg.topic, 'payload':msg.payload, 'label':unit};",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 500,
+        "y": 80,
+        "wires": [
+            [
+                "6059660e.b5b7d8",
+                "14a84546.297b0b"
+            ]
         ]
     }
 ]

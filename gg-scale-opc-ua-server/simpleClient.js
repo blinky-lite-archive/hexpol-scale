@@ -11,8 +11,8 @@ var user = {
   'encryptionAlgorithm': "..."
 };
 var client = new opcua.OPCUAClient();
-//var endpointUrl = "opc.tcp://" + require("os").hostname() + ":4334/UA/gg-scale-server";
-var endpointUrl = "opc.tcp://83.251.160.30:4334/UA/gg-scale-server";
+//var endpointUrl = "opc.tcp://" + require("os").hostname() + ":4334/SMC";
+var endpointUrl = "opc.tcp://83.251.160.30:4334/SMC";
 
 
 var the_session, the_subscription;
@@ -55,7 +55,7 @@ async.series([
 
     // step 4 : read a variable with readVariableValue
     function(callback) {
-       the_session.readVariableValue("ns=2;s=weight01", function(err,dataValue) {
+       the_session.readVariableValue("ns=2;s=Weight", function(err,dataValue) {
            if (!err) {
                console.log("Weight = " , dataValue.toString());
            }
@@ -68,7 +68,7 @@ async.series([
     // step 4' : read a variable with read
     function(callback) {
        var maxAge = 0;
-       var nodeToRead = { nodeId: "ns=2;s=weight01", attributeId: opcua.AttributeIds.Value };
+       var nodeToRead = { nodeId: "ns=2;s=Weight", attributeId: opcua.AttributeIds.Value };
        the_session.read(nodeToRead, maxAge, function(err,dataValue) {
            if (!err) {
                console.log("Weight = " , dataValue.toString() );
@@ -104,7 +104,7 @@ async.series([
 
        // install monitored item
        var monitoredItem  = the_subscription.monitor({
-           nodeId: opcua.resolveNodeId("ns=2;s=weight01"),
+           nodeId: opcua.resolveNodeId("ns=2;s=Weight"),
            attributeId: opcua.AttributeIds.Value
        },
        {

@@ -16,12 +16,7 @@ var userManager = {
 // Let's create an instance of OPCUAServer
 var server = new opcua.OPCUAServer({
     port: 4334, // the port of the listening socket of the server
-    resourcePath: "UA/gg-scale-server", // this path will be added to the endpoint resource name
-     buildInfo : {
-        productName: "gg-scale-server",
-        buildNumber: "0001",
-        buildDate: new Date(2018,8,14)
-    },
+    resourcePath: "SMC", // this path will be added to the endpoint resource name
     userManager: userManager,
     allowAnonymous: false,
     alternateHostname:'83.251.160.30'
@@ -37,69 +32,101 @@ function post_initialize() {
         // declare a new object
         var device = addressSpace.addObject({
             organizedBy: addressSpace.rootFolder.objects,
-            browseName: "gg-scale"
+            browseName: "Scale1"
         });
 
-        var ggScaleWeight01 = 0.0;
+        var Scale1Weight = 0.0;
         server.engine.addressSpace.addVariable({
             componentOf: device,
-            nodeId: "ns=2;s=weight01",
-            browseName: "ggScaleWeight01",
+            nodeId: "ns=2;s=Weight",
+            browseName: "Weight",
             dataType: "Double",
             value: {
                 get: function () {
-                    return new opcua.Variant({dataType: opcua.DataType.Double, value: ggScaleWeight01 });
+                    return new opcua.Variant({dataType: opcua.DataType.Double, value: Scale1Weight });
                 },
                 set: function (variant) {
-                    ggScaleWeight01 = parseFloat(variant.value);
+                    Scale1Weight = parseFloat(variant.value);
                     return opcua.StatusCodes.Good;
                 }
             }
         });
-        var ggScaleValidData01 = true;
+        var Scale1DataValid = true;
         server.engine.addressSpace.addVariable({
             componentOf: device,
-            nodeId: "ns=2;s=validData01",
-            browseName: "ggScaleValidData01",
+            nodeId: "ns=2;s=DataValid",
+            browseName: "DataValid",
             dataType: "Boolean",
             value: {
                 get: function () {
-                    return new opcua.Variant({dataType: opcua.DataType.Boolean, value: ggScaleValidData01 });
+                    return new opcua.Variant({dataType: opcua.DataType.Boolean, value: Scale1DataValid });
                 },
                 set: function (variant) {
-                    ggScaleValidData01 = variant.value;
+                    Scale1DataValid = variant.value;
                     return opcua.StatusCodes.Good;
                 }
             }
         });
-        var ggScaleTimeStamp01 = '0';
+        var Scale1ToggleUnit = false;
         server.engine.addressSpace.addVariable({
             componentOf: device,
-            nodeId: "ns=2;s=timeStamp01",
-            browseName: "ggScaleTimeStamp01",
-            dataType: "String",
+            nodeId: "ns=2;s=ToggleUnit",
+            browseName: "ToggleUnit",
+            dataType: "Boolean",
             value: {
                 get: function () {
-                    return new opcua.Variant({dataType: opcua.DataType.String, value: ggScaleTimeStamp01 });
+                    return new opcua.Variant({dataType: opcua.DataType.Boolean, value: Scale1ToggleUnit });
                 },
                 set: function (variant) {
-                    ggScaleTimeStamp01 = variant.value;
+                    Scale1ToggleUnit = variant.value;
                     return opcua.StatusCodes.Good;
                 }
             }
         });
-        var ggScaleUnit01 = 'g';
+        var Scale1ZeroScale = false;
         server.engine.addressSpace.addVariable({
             componentOf: device,
-            nodeId: "ns=2;s=unit01",
-            browseName: "ggScaleUnit01",
+            nodeId: "ns=2;s=ZeroScale",
+            browseName: "ZeroScale",
+            dataType: "Boolean",
+            value: {
+                get: function () {
+                    return new opcua.Variant({dataType: opcua.DataType.Boolean, value: Scale1ZeroScale });
+                },
+                set: function (variant) {
+                    Scale1ZeroScale = variant.value;
+                    return opcua.StatusCodes.Good;
+                }
+            }
+        });
+        var Scale1TimeStamp = '0';
+        server.engine.addressSpace.addVariable({
+            componentOf: device,
+            nodeId: "ns=2;s=TimeStamp",
+            browseName: "TimeStamp",
             dataType: "String",
             value: {
                 get: function () {
-                    return new opcua.Variant({dataType: opcua.DataType.String, value: ggScaleUnit01 });
+                    return new opcua.Variant({dataType: opcua.DataType.String, value: Scale1TimeStamp });
                 },
                 set: function (variant) {
-                    ggScaleUnit01 = variant.value;
+                    Scale1TimeStamp = variant.value;
+                    return opcua.StatusCodes.Good;
+                }
+            }
+        });
+        var Scale1Unit = 'g';
+        server.engine.addressSpace.addVariable({
+            componentOf: device,
+            nodeId: "ns=2;s=Unit",
+            browseName: "Unit",
+            dataType: "String",
+            value: {
+                get: function () {
+                    return new opcua.Variant({dataType: opcua.DataType.String, value: Scale1Unit });
+                },
+                set: function (variant) {
+                    Scale1Unit = variant.value;
                     return opcua.StatusCodes.Good;
                 }
             }

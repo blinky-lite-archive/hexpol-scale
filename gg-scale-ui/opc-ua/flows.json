@@ -99,7 +99,7 @@
         "id": "366ed23a.21144e",
         "type": "OpcUa-Endpoint",
         "z": "465cfd27.107674",
-        "endpoint": "opc.tcp://localhost:4334/UA/gg-scale-server",
+        "endpoint": "opc.tcp://localhost:4334/SMC",
         "login": true
     },
     {
@@ -121,141 +121,6 @@
         "order": 1
     },
     {
-        "id": "dd11a017.ef182",
-        "type": "debug",
-        "z": "465cfd27.107674",
-        "name": "",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "x": 870,
-        "y": 60,
-        "wires": []
-    },
-    {
-        "id": "fb56a66d.407518",
-        "type": "OpcUa-Item",
-        "z": "465cfd27.107674",
-        "item": "ns=2;s=weight01",
-        "datatype": "Double",
-        "value": "",
-        "name": "gg-scale - weight01",
-        "x": 370,
-        "y": 40,
-        "wires": [
-            [
-                "935d0655.a58518"
-            ]
-        ]
-    },
-    {
-        "id": "935d0655.a58518",
-        "type": "OpcUa-Client",
-        "z": "465cfd27.107674",
-        "endpoint": "366ed23a.21144e",
-        "action": "read",
-        "time": "1",
-        "timeUnit": "s",
-        "name": "Test server (read items)",
-        "x": 650,
-        "y": 40,
-        "wires": [
-            [
-                "dd11a017.ef182"
-            ]
-        ]
-    },
-    {
-        "id": "91c96299.0254b",
-        "type": "inject",
-        "z": "465cfd27.107674",
-        "name": "Read",
-        "topic": "",
-        "payload": "",
-        "payloadType": "date",
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": "",
-        "x": 130,
-        "y": 40,
-        "wires": [
-            [
-                "fb56a66d.407518"
-            ]
-        ]
-    },
-    {
-        "id": "7be2970e.90adf8",
-        "type": "OpcUa-Item",
-        "z": "465cfd27.107674",
-        "item": "ns=2;s=weight01",
-        "datatype": "Double",
-        "value": "",
-        "name": "gg-scale - weight01",
-        "x": 450,
-        "y": 280,
-        "wires": [
-            [
-                "7fc7d547.f16f6c"
-            ]
-        ]
-    },
-    {
-        "id": "7fc7d547.f16f6c",
-        "type": "OpcUa-Client",
-        "z": "465cfd27.107674",
-        "endpoint": "366ed23a.21144e",
-        "action": "write",
-        "time": "",
-        "name": "Test server (write items)",
-        "x": 730,
-        "y": 280,
-        "wires": [
-            [
-                "589e2f40.fb217"
-            ]
-        ]
-    },
-    {
-        "id": "65a9914d.f487",
-        "type": "inject",
-        "z": "465cfd27.107674",
-        "name": "Write",
-        "topic": "",
-        "payload": "42",
-        "payloadType": "num",
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": "",
-        "x": 110,
-        "y": 280,
-        "wires": [
-            [
-                "222f3dc6.ca5402"
-            ]
-        ]
-    },
-    {
-        "id": "222f3dc6.ca5402",
-        "type": "function",
-        "z": "465cfd27.107674",
-        "name": "count",
-        "func": "var counter = context.get('counter');\nif (counter == undefined) counter = msg.payload;\ncounter = counter + 1;\ncontext.set('counter', counter);\nmsg.payload = counter;\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "x": 230,
-        "y": 280,
-        "wires": [
-            [
-                "7be2970e.90adf8"
-            ]
-        ]
-    },
-    {
         "id": "8b71018d.22b7c",
         "type": "inject",
         "z": "465cfd27.107674",
@@ -268,29 +133,15 @@
         "once": true,
         "onceDelay": "",
         "x": 180,
-        "y": 560,
+        "y": 100,
         "wires": [
             [
-                "2947d38d.a3c27c",
-                "e103486c.b7b5a8",
-                "c46a378.041e6c8",
-                "96ab6648.a2bb78"
+                "67d65d18.1b58d4",
+                "6633494d.191128",
+                "18536b33.5038d5",
+                "66e26b68.0ffe94"
             ]
         ]
-    },
-    {
-        "id": "269b4072.d6152",
-        "type": "debug",
-        "z": "465cfd27.107674",
-        "name": "Subscribed values",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "x": 1010,
-        "y": 560,
-        "wires": []
     },
     {
         "id": "bc7a69e.c814e98",
@@ -298,342 +149,16 @@
         "z": "465cfd27.107674",
         "endpoint": "366ed23a.21144e",
         "action": "subscribe",
-        "time": "1",
-        "timeUnit": "s",
+        "time": "200",
+        "timeUnit": "ms",
         "name": "Test server (subscribe items)",
         "x": 740,
-        "y": 560,
+        "y": 100,
         "wires": [
             [
                 "d70784da.a6c558"
             ]
         ]
-    },
-    {
-        "id": "2947d38d.a3c27c",
-        "type": "OpcUa-Item",
-        "z": "465cfd27.107674",
-        "item": "ns=2;s=weight01",
-        "datatype": "Double",
-        "value": "",
-        "name": "gg-scale - weight01",
-        "x": 470,
-        "y": 560,
-        "wires": [
-            [
-                "bc7a69e.c814e98"
-            ]
-        ]
-    },
-    {
-        "id": "ef87062b.53e268",
-        "type": "OpcUa-Item",
-        "z": "465cfd27.107674",
-        "item": "ns=2;s=validData01",
-        "datatype": "Boolean",
-        "value": "",
-        "name": "gg-scale - validData01",
-        "x": 360,
-        "y": 80,
-        "wires": [
-            [
-                "935d0655.a58518"
-            ]
-        ]
-    },
-    {
-        "id": "46846244.fb258c",
-        "type": "inject",
-        "z": "465cfd27.107674",
-        "name": "Read",
-        "topic": "",
-        "payload": "",
-        "payloadType": "date",
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": "",
-        "x": 130,
-        "y": 80,
-        "wires": [
-            [
-                "ef87062b.53e268"
-            ]
-        ]
-    },
-    {
-        "id": "4a07fb7d.b64804",
-        "type": "OpcUa-Item",
-        "z": "465cfd27.107674",
-        "item": "ns=2;s=validData01",
-        "datatype": "Boolean",
-        "value": "",
-        "name": "gg-scale - validData01",
-        "x": 440,
-        "y": 320,
-        "wires": [
-            [
-                "7fc7d547.f16f6c"
-            ]
-        ]
-    },
-    {
-        "id": "d1de1166.c8b1f",
-        "type": "inject",
-        "z": "465cfd27.107674",
-        "name": "Write",
-        "topic": "",
-        "payload": "false",
-        "payloadType": "bool",
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": "",
-        "x": 110,
-        "y": 320,
-        "wires": [
-            [
-                "8aedae4f.457bd"
-            ]
-        ]
-    },
-    {
-        "id": "8aedae4f.457bd",
-        "type": "function",
-        "z": "465cfd27.107674",
-        "name": "toggle",
-        "func": "var toggle = context.get('toggle');\nif (toggle == undefined) toggle = msg.payload;\ntoggle = !toggle;\ncontext.set('toggle', toggle);\nmsg.payload = toggle;\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "x": 230,
-        "y": 320,
-        "wires": [
-            [
-                "4a07fb7d.b64804"
-            ]
-        ]
-    },
-    {
-        "id": "e103486c.b7b5a8",
-        "type": "OpcUa-Item",
-        "z": "465cfd27.107674",
-        "item": "ns=2;s=validData01",
-        "datatype": "Int16",
-        "value": "",
-        "name": "gg-scale - validData01",
-        "x": 460,
-        "y": 600,
-        "wires": [
-            [
-                "bc7a69e.c814e98"
-            ]
-        ]
-    },
-    {
-        "id": "5f602999.d21f68",
-        "type": "OpcUa-Item",
-        "z": "465cfd27.107674",
-        "item": "ns=2;s=timeStamp01",
-        "datatype": "String",
-        "value": "",
-        "name": "gg-scale - timeStamp01",
-        "x": 350,
-        "y": 120,
-        "wires": [
-            [
-                "935d0655.a58518"
-            ]
-        ]
-    },
-    {
-        "id": "9d8669c6.1fa908",
-        "type": "inject",
-        "z": "465cfd27.107674",
-        "name": "Read",
-        "topic": "",
-        "payload": "",
-        "payloadType": "date",
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": "",
-        "x": 130,
-        "y": 120,
-        "wires": [
-            [
-                "5f602999.d21f68"
-            ]
-        ]
-    },
-    {
-        "id": "6ea0e2c.d36751c",
-        "type": "OpcUa-Item",
-        "z": "465cfd27.107674",
-        "item": "ns=2;s=timeStamp01",
-        "datatype": "String",
-        "value": "",
-        "name": "gg-scale - timeStamp01",
-        "x": 430,
-        "y": 360,
-        "wires": [
-            [
-                "7fc7d547.f16f6c"
-            ]
-        ]
-    },
-    {
-        "id": "14e737b5.84e168",
-        "type": "inject",
-        "z": "465cfd27.107674",
-        "name": "Write",
-        "topic": "",
-        "payload": "",
-        "payloadType": "date",
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": "",
-        "x": 110,
-        "y": 360,
-        "wires": [
-            [
-                "8d84a3a1.ee5be"
-            ]
-        ]
-    },
-    {
-        "id": "8d84a3a1.ee5be",
-        "type": "function",
-        "z": "465cfd27.107674",
-        "name": "toString",
-        "func": "msg.payload = msg.payload.toString();\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "x": 240,
-        "y": 360,
-        "wires": [
-            [
-                "6ea0e2c.d36751c"
-            ]
-        ]
-    },
-    {
-        "id": "c46a378.041e6c8",
-        "type": "OpcUa-Item",
-        "z": "465cfd27.107674",
-        "item": "ns=2;s=timeStamp01",
-        "datatype": "String",
-        "value": "",
-        "name": "gg-scale - timeStamp01",
-        "x": 450,
-        "y": 640,
-        "wires": [
-            [
-                "bc7a69e.c814e98"
-            ]
-        ]
-    },
-    {
-        "id": "a3607daa.bcd81",
-        "type": "OpcUa-Item",
-        "z": "465cfd27.107674",
-        "item": "ns=2;s=unit01",
-        "datatype": "String",
-        "value": "",
-        "name": "gg-scale - unit01",
-        "x": 370,
-        "y": 160,
-        "wires": [
-            [
-                "935d0655.a58518"
-            ]
-        ]
-    },
-    {
-        "id": "8d9ac8ca.471648",
-        "type": "inject",
-        "z": "465cfd27.107674",
-        "name": "Read",
-        "topic": "",
-        "payload": "",
-        "payloadType": "date",
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": "",
-        "x": 130,
-        "y": 160,
-        "wires": [
-            [
-                "a3607daa.bcd81"
-            ]
-        ]
-    },
-    {
-        "id": "8c1acf71.8da7a",
-        "type": "OpcUa-Item",
-        "z": "465cfd27.107674",
-        "item": "ns=2;s=unit01",
-        "datatype": "String",
-        "value": "",
-        "name": "gg-scale - unit01",
-        "x": 450,
-        "y": 400,
-        "wires": [
-            [
-                "7fc7d547.f16f6c"
-            ]
-        ]
-    },
-    {
-        "id": "da2f1d3b.c159c",
-        "type": "inject",
-        "z": "465cfd27.107674",
-        "name": "Write",
-        "topic": "",
-        "payload": "Howdy",
-        "payloadType": "str",
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": "",
-        "x": 110,
-        "y": 400,
-        "wires": [
-            [
-                "8c1acf71.8da7a"
-            ]
-        ]
-    },
-    {
-        "id": "96ab6648.a2bb78",
-        "type": "OpcUa-Item",
-        "z": "465cfd27.107674",
-        "item": "ns=2;s=unit01",
-        "datatype": "String",
-        "value": "",
-        "name": "gg-scale - unit01",
-        "x": 470,
-        "y": 680,
-        "wires": [
-            [
-                "bc7a69e.c814e98"
-            ]
-        ]
-    },
-    {
-        "id": "589e2f40.fb217",
-        "type": "debug",
-        "z": "465cfd27.107674",
-        "name": "",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "x": 950,
-        "y": 280,
-        "wires": []
     },
     {
         "id": "4b9d64e2.8f56cc",
@@ -657,8 +182,8 @@
         ],
         "seg1": "-150",
         "seg2": "150",
-        "x": 1210,
-        "y": 620,
+        "x": 1150,
+        "y": 60,
         "wires": []
     },
     {
@@ -666,11 +191,11 @@
         "type": "function",
         "z": "465cfd27.107674",
         "name": "Parse Data",
-        "func": "if (msg.topic.indexOf('weight') > -1) context.set('weight',msg.payload);\nif (msg.topic.indexOf('validData') > -1) context.set('validData',msg.payload);\nif (msg.topic.indexOf('unit') > -1) context.set('unit',msg.payload);\nif (msg.topic.indexOf('timeStamp') > -1) context.set('timeStamp',msg.payload);\nvar weight = context.get('weight');\nvar validData = context.get('validData');\nvar unit = context.get('unit');\nvar timeStamp = context.get('timeStamp');\nif (weight == undefined) weight = 0.0;\nif (validData == undefined) validData = false;\nif (unit == undefined) unit = '';\nif (timeStamp == undefined) timeStamp = '';\nvar newMsg = \n{\n    'topic':'validData',\n    'payload':validData\n}\nreturn [{'topic':unit, 'payload':weight},newMsg];",
+        "func": "if (msg.topic.indexOf('Weight') > -1) context.set('Weight',msg.payload);\nif (msg.topic.indexOf('DataValid') > -1) context.set('DataValid',msg.payload);\nif (msg.topic.indexOf('Unit') > -1) context.set('Unit',msg.payload);\nif (msg.topic.indexOf('TimeStamp') > -1) context.set('TimeStamp',msg.payload);\nvar Weight = context.get('Weight');\nvar DataValid = context.get('DataValid');\nvar Unit = context.get('Unit');\nvar TimeStamp = context.get('TimeStamp');\nif (Weight == undefined) Weight = 0.0;\nif (DataValid == undefined) DataValid = false;\nif (Unit == undefined) Unit = '';\nif (TimeStamp == undefined) TimeStamp = '';\nvar newMsg = \n{\n    'topic':'DataValid',\n    'payload':DataValid\n}\nreturn [{'topic':Unit, 'payload':Weight},newMsg];",
         "outputs": 2,
         "noerr": 0,
         "x": 970,
-        "y": 640,
+        "y": 100,
         "wires": [
             [
                 "4b9d64e2.8f56cc",
@@ -693,8 +218,8 @@
         "label": "Valid Data",
         "format": "<font color={{(msg.payload == false) ? 'red' : 'lime'}} size=\"6\" ><i class=\"fa fa-circle\"></i></font>",
         "layout": "row-center",
-        "x": 1230,
-        "y": 700,
+        "x": 1170,
+        "y": 140,
         "wires": []
     },
     {
@@ -732,11 +257,163 @@
             "#c5b0d5"
         ],
         "useOldStyle": false,
-        "x": 1230,
-        "y": 660,
+        "x": 1170,
+        "y": 100,
         "wires": [
             [],
             []
+        ]
+    },
+    {
+        "id": "67d65d18.1b58d4",
+        "type": "OpcUa-Item",
+        "z": "465cfd27.107674",
+        "item": "ns=2;s=Weight",
+        "datatype": "Double",
+        "value": "",
+        "name": "Scale1.Weight",
+        "x": 480,
+        "y": 40,
+        "wires": [
+            [
+                "bc7a69e.c814e98"
+            ]
+        ]
+    },
+    {
+        "id": "6633494d.191128",
+        "type": "OpcUa-Item",
+        "z": "465cfd27.107674",
+        "item": "ns=2;s=DataValid",
+        "datatype": "Boolean",
+        "value": "",
+        "name": "Scale1.DataValid",
+        "x": 470,
+        "y": 80,
+        "wires": [
+            [
+                "bc7a69e.c814e98"
+            ]
+        ]
+    },
+    {
+        "id": "18536b33.5038d5",
+        "type": "OpcUa-Item",
+        "z": "465cfd27.107674",
+        "item": "ns=2;s=TimeStamp",
+        "datatype": "String",
+        "value": "",
+        "name": "Scale1.TimeStamp",
+        "x": 470,
+        "y": 120,
+        "wires": [
+            [
+                "bc7a69e.c814e98"
+            ]
+        ]
+    },
+    {
+        "id": "66e26b68.0ffe94",
+        "type": "OpcUa-Item",
+        "z": "465cfd27.107674",
+        "item": "ns=2;s=Unit",
+        "datatype": "String",
+        "value": "",
+        "name": "Scale1.Unit",
+        "x": 490,
+        "y": 160,
+        "wires": [
+            [
+                "bc7a69e.c814e98"
+            ]
+        ]
+    },
+    {
+        "id": "1b573e37.3ded42",
+        "type": "ui_template",
+        "z": "465cfd27.107674",
+        "group": "22cd3988.a5e166",
+        "name": "Toggle Unit",
+        "order": 4,
+        "width": "0",
+        "height": "0",
+        "format": "<md-button \n    ng-style=\"{color:'black', background:'lime'}\"\n    ng-disabled='false'\n    ng-click=\"send({payload:true})\">Toggle Unit</md-button>\n",
+        "storeOutMessages": false,
+        "fwdInMessages": false,
+        "templateScope": "local",
+        "x": 130,
+        "y": 240,
+        "wires": [
+            [
+                "285957b0.6e2078"
+            ]
+        ]
+    },
+    {
+        "id": "1941ca77.881ab6",
+        "type": "ui_template",
+        "z": "465cfd27.107674",
+        "group": "22cd3988.a5e166",
+        "name": "Zero Scale",
+        "order": 5,
+        "width": "0",
+        "height": "0",
+        "format": "<md-button \n    ng-style=\"{color:'black', background:'lime'}\"\n    ng-disabled='false'\n    ng-click=\"send({payload:true})\">Zero Scale</md-button>\n",
+        "storeOutMessages": false,
+        "fwdInMessages": false,
+        "templateScope": "local",
+        "x": 130,
+        "y": 300,
+        "wires": [
+            [
+                "c9490814.1ff398"
+            ]
+        ]
+    },
+    {
+        "id": "285957b0.6e2078",
+        "type": "OpcUa-Item",
+        "z": "465cfd27.107674",
+        "item": "ns=2;s=ToggleUnit",
+        "datatype": "Boolean",
+        "value": "",
+        "name": "Scale1.ToggleUnit",
+        "x": 470,
+        "y": 240,
+        "wires": [
+            [
+                "a237c649.347128"
+            ]
+        ]
+    },
+    {
+        "id": "a237c649.347128",
+        "type": "OpcUa-Client",
+        "z": "465cfd27.107674",
+        "endpoint": "366ed23a.21144e",
+        "action": "write",
+        "time": "",
+        "name": "Test server (write items)",
+        "x": 730,
+        "y": 260,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "c9490814.1ff398",
+        "type": "OpcUa-Item",
+        "z": "465cfd27.107674",
+        "item": "ns=2;s=ZeroScale",
+        "datatype": "Boolean",
+        "value": "",
+        "name": "Scale1.ZeroScale",
+        "x": 470,
+        "y": 300,
+        "wires": [
+            [
+                "a237c649.347128"
+            ]
         ]
     }
 ]
