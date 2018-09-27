@@ -1,9 +1,18 @@
 /*global require,console,setTimeout */
 var opcua = require("node-opcua");
 var async = require("async");
+var dotenv = require('dotenv')
+dotenv.config();
 
+var user = {
+  'userName':process.env.OPC_UA_USER,
+  'password':process.env.OPC_UA_PASSWORD,
+  'policyId': "...",
+  'encryptionAlgorithm': "..."
+};
 var client = new opcua.OPCUAClient();
-var endpointUrl = "opc.tcp://" + require("os").hostname() + ":4334/UA/MyLittleServer";
+//var endpointUrl = "opc.tcp://" + require("os").hostname() + ":4334/UA/gg-scale-server";
+var endpointUrl = "opc.tcp://83.251.160.30:4334/UA/gg-scale-server";
 
 
 var the_session, the_subscription;
@@ -24,7 +33,7 @@ async.series([
 
     // step 2 : createSession
     function(callback) {
-        client.createSession( function(err,session) {
+        client.createSession(user, function(err,session) {
             if(!err) {
                 the_session = session;
             }
@@ -46,9 +55,9 @@ async.series([
 
     // step 4 : read a variable with readVariableValue
     function(callback) {
-       the_session.readVariableValue("ns=1;s=free_memory", function(err,dataValue) {
+       the_session.readVariableValue("ns=2;s=weight01", function(err,dataValue) {
            if (!err) {
-               console.log(" free mem % = " , dataValue.toString());
+               console.log("Weight = " , dataValue.toString());
            }
            callback(err);
        });
@@ -59,10 +68,10 @@ async.series([
     // step 4' : read a variable with read
     function(callback) {
        var maxAge = 0;
-       var nodeToRead = { nodeId: "ns=1;s=free_memory", attributeId: opcua.AttributeIds.Value };
+       var nodeToRead = { nodeId: "ns=2;s=weight01", attributeId: opcua.AttributeIds.Value };
        the_session.read(nodeToRead, maxAge, function(err,dataValue) {
            if (!err) {
-               console.log(" free mem % = " , dataValue.toString() );
+               console.log("Weight = " , dataValue.toString() );
            }
            callback(err);
        });
@@ -95,7 +104,7 @@ async.series([
 
        // install monitored item
        var monitoredItem  = the_subscription.monitor({
-           nodeId: opcua.resolveNodeId("ns=1;s=free_memory"),
+           nodeId: opcua.resolveNodeId("ns=2;s=weight01"),
            attributeId: opcua.AttributeIds.Value
        },
        {
@@ -108,7 +117,7 @@ async.series([
        console.log("-------------------------------------");
 
        monitoredItem.on("changed",function(dataValue){
-          console.log(" % free mem = ",dataValue.value.value);
+          console.log("Weight = ",dataValue.value.value);
        });
     },
 

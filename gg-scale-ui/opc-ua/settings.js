@@ -117,8 +117,8 @@ module.exports = {
     adminAuth: {
         type: "credentials",
         users: [{
-            username: "admin",
-            password: "$2a$08$tATQSwsGccaGlXrH65fW..PQupyHRRCY64h1E9RwVje/PaWpqeTRO",
+            username: "hexpol",
+            password: "$2a$08$mYKggrrDyqGwGnuGAxv/qO0EKdRgZayziLx08fVhBKqDQFgLgi40y",
             permissions: "*"
         }]
     },
@@ -127,8 +127,8 @@ module.exports = {
     // the static content (httpStatic), the following properties can be used.
     // The pass field is a bcrypt hash of the password.
     // See http://nodered.org/docs/security.html#generating-the-password-hash
-    httpNodeAuth: {user:"user",pass:"$2a$08$tATQSwsGccaGlXrH65fW..PQupyHRRCY64h1E9RwVje/PaWpqeTRO"},
-    httpStaticAuth: {user:"user",pass:"$2a$08$tATQSwsGccaGlXrH65fW..PQupyHRRCY64h1E9RwVje/PaWpqeTRO"},
+    httpNodeAuth: {user:"hexpol",pass:"$2a$08$mYKggrrDyqGwGnuGAxv/qO0EKdRgZayziLx08fVhBKqDQFgLgi40y"},
+    httpStaticAuth: {user:"hexpol",pass:"$2a$08$mYKggrrDyqGwGnuGAxv/qO0EKdRgZayziLx08fVhBKqDQFgLgi40y"},
 
     // The following property can be used to enable HTTPS
     // See http://nodejs.org/api/https.html#https_https_createserver_options_requestlistener

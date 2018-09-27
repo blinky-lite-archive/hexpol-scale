@@ -2,7 +2,7 @@
     {
         "id": "b2c87d64.2d69",
         "type": "tab",
-        "label": "gg-scale-ui",
+        "label": "gg-scale-ui-blinky-lite",
         "disabled": false,
         "info": ""
     },
@@ -79,7 +79,7 @@
             }
         },
         "site": {
-            "name": "GG-SCALE MQTT",
+            "name": "GG-SCALE UI Blinky-Lite",
             "hideToolbar": "false",
             "allowSwipe": "false",
             "dateFormat": "DD/MM/YYYY",
@@ -128,7 +128,7 @@
         "id": "187e2772.eeb299",
         "type": "ui_tab",
         "z": "",
-        "name": "GG-SCALE",
+        "name": "GG-SCALE UI Blinky-Lite",
         "icon": "dashboard",
         "order": 1
     },

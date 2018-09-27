@@ -1,6 +1,17 @@
 /*global require,setInterval,console */
 var opcua = require("node-opcua");
+var dotenv = require('dotenv')
+dotenv.config();
 
+var userManager = {
+    isValidUser: function (userName, password) {
+      if (userName === process.env.OPC_UA_USER && password === process.env.OPC_UA_PASSWORD) {
+        console.log('New Connection.');
+        return true;
+      }
+      return false;
+    }
+};
 
 // Let's create an instance of OPCUAServer
 var server = new opcua.OPCUAServer({
@@ -10,11 +21,15 @@ var server = new opcua.OPCUAServer({
         productName: "gg-scale-server",
         buildNumber: "0001",
         buildDate: new Date(2018,8,14)
-    }
+    },
+    userManager: userManager,
+    allowAnonymous: false,
+    alternateHostname:'83.251.160.30'
 });
 
 function post_initialize() {
-    console.log("initialized");
+    console.log("Initialized.");
+
     function construct_my_address_space(server) {
 
         var addressSpace = server.engine.addressSpace;

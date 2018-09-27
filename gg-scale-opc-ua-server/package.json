@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/node-opcua/node-opcua#readme",
   "dependencies": {
+    "dotenv": "^6.0.0",
     "node-opcua": "^0.4.1"
   }
 }

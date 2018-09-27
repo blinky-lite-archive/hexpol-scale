@@ -2,7 +2,7 @@
     {
         "id": "465cfd27.107674",
         "type": "tab",
-        "label": "gg-scale-opcua-ui",
+        "label": "gg-scale-ui-opcua",
         "disabled": false,
         "info": ""
     },
@@ -79,7 +79,7 @@
             }
         },
         "site": {
-            "name": "GG-SCALE OPCUA",
+            "name": "GG-SCALE UI OPCUA",
             "hideToolbar": "false",
             "allowSwipe": "false",
             "dateFormat": "DD/MM/YYYY",
@@ -100,7 +100,7 @@
         "type": "OpcUa-Endpoint",
         "z": "465cfd27.107674",
         "endpoint": "opc.tcp://localhost:4334/UA/gg-scale-server",
-        "login": false
+        "login": true
     },
     {
         "id": "22cd3988.a5e166",
@@ -116,7 +116,7 @@
         "id": "de9d6da2.9de1",
         "type": "ui_tab",
         "z": "",
-        "name": "GG-SCALE",
+        "name": "GG-SCALE UI OPCUA",
         "icon": "dashboard",
         "order": 1
     },
@@ -131,7 +131,7 @@
         "tostatus": false,
         "complete": "false",
         "x": 870,
-        "y": 40,
+        "y": 60,
         "wires": []
     },
     {
