@@ -9,7 +9,7 @@
     {
         "id": "b2c87d64.2d69",
         "type": "tab",
-        "label": "gg-scale-ui",
+        "label": "gg-scale-dma-ui",
         "disabled": false,
         "info": ""
     },
@@ -86,7 +86,7 @@
             }
         },
         "site": {
-            "name": "GG-SCALE-01",
+            "name": "GG-SCALE DMA Blinky-Lite",
             "hideToolbar": "false",
             "allowSwipe": "false",
             "dateFormat": "DD/MM/YYYY",
@@ -149,7 +149,7 @@
         "id": "187e2772.eeb299",
         "type": "ui_tab",
         "z": "",
-        "name": "GG-SCALE-01",
+        "name": "GG-SCALE DMA Blinky-Lite",
         "icon": "dashboard",
         "order": 1
     },
@@ -158,7 +158,7 @@
         "type": "OpcUa-Endpoint",
         "z": "465cfd27.107674",
         "endpoint": "opc.tcp://blinky-lite-02.local:4334/UA/gg-scale-server",
-        "login": false
+        "login": true
     },
     {
         "id": "c808ce9.a7f7d3",
