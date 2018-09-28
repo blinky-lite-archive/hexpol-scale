@@ -191,8 +191,8 @@
         "type": "function",
         "z": "465cfd27.107674",
         "name": "Parse Data",
-        "func": "if (msg.topic.indexOf('Weight') > -1) context.set('Weight',msg.payload);\nif (msg.topic.indexOf('DataValid') > -1) context.set('DataValid',msg.payload);\nif (msg.topic.indexOf('Unit') > -1) context.set('Unit',msg.payload);\nif (msg.topic.indexOf('TimeStamp') > -1) context.set('TimeStamp',msg.payload);\nvar Weight = context.get('Weight');\nvar DataValid = context.get('DataValid');\nvar Unit = context.get('Unit');\nvar TimeStamp = context.get('TimeStamp');\nif (Weight == undefined) Weight = 0.0;\nif (DataValid == undefined) DataValid = false;\nif (Unit == undefined) Unit = '';\nif (TimeStamp == undefined) TimeStamp = '';\nvar newMsg = \n{\n    'topic':'DataValid',\n    'payload':DataValid\n}\nreturn [{'topic':Unit, 'payload':Weight},newMsg];",
-        "outputs": 2,
+        "func": "if (msg.topic.indexOf('Weight') > -1) context.set('Weight',msg.payload);\nif (msg.topic.indexOf('DataValid') > -1) context.set('DataValid',msg.payload);\nif (msg.topic.indexOf('Unit') > -1) context.set('Unit',msg.payload);\nif (msg.topic.indexOf('TimeStamp') > -1)\n    context.set('TimeStamp',new Date(Number(msg.payload)).toISOString());\nvar Weight = context.get('Weight');\nvar DataValid = context.get('DataValid');\nvar Unit = context.get('Unit');\nvar TimeStamp = context.get('TimeStamp');\nif (Weight == undefined) Weight = 0.0;\nif (DataValid == undefined) DataValid = false;\nif (Unit == undefined) Unit = '';\nif (TimeStamp == undefined) TimeStamp = '';\nvar weightMsg = \n{\n    'topic':Unit,\n    'payload':Weight\n};\nvar dataValidMsg = \n{\n    'topic':'DataValid',\n    'payload':DataValid\n}\nvar timeMsg = \n{\n    'topic':'date',\n    'payload':TimeStamp\n};\n\nreturn [weightMsg, dataValidMsg,timeMsg];",
+        "outputs": 3,
         "noerr": 0,
         "x": 970,
         "y": 100,
@@ -203,6 +203,9 @@
             ],
             [
                 "d5aaed55.f37be"
+            ],
+            [
+                "18670e08.193052"
             ]
         ]
     },
@@ -334,7 +337,7 @@
         "z": "465cfd27.107674",
         "group": "22cd3988.a5e166",
         "name": "Toggle Unit",
-        "order": 4,
+        "order": 5,
         "width": "0",
         "height": "0",
         "format": "<md-button \n    ng-style=\"{color:'black', background:'lime'}\"\n    ng-disabled='false'\n    ng-click=\"send({payload:true})\">Toggle Unit</md-button>\n",
@@ -355,7 +358,7 @@
         "z": "465cfd27.107674",
         "group": "22cd3988.a5e166",
         "name": "Zero Scale",
-        "order": 5,
+        "order": 6,
         "width": "0",
         "height": "0",
         "format": "<md-button \n    ng-style=\"{color:'black', background:'lime'}\"\n    ng-disabled='false'\n    ng-click=\"send({payload:true})\">Zero Scale</md-button>\n",
@@ -415,5 +418,21 @@
                 "a237c649.347128"
             ]
         ]
+    },
+    {
+        "id": "18670e08.193052",
+        "type": "ui_text",
+        "z": "465cfd27.107674",
+        "group": "22cd3988.a5e166",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "name": "Date",
+        "label": "Time Stamp",
+        "format": "<font color='lime'>{{msg.payload}}</font>",
+        "layout": "col-center",
+        "x": 1150,
+        "y": 180,
+        "wires": []
     }
 ]
