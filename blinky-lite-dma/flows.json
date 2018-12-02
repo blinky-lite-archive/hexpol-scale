@@ -121,7 +121,7 @@
         "type": "mqtt-broker",
         "z": "",
         "name": "SMC",
-        "broker": "broker.shiftr.io",
+        "broker": "blinky-lite-02.local",
         "port": "1883",
         "clientid": "Scale1DMA",
         "usetls": false,
@@ -165,7 +165,7 @@
         "type": "mqtt-broker",
         "z": "",
         "name": "SMC2",
-        "broker": "broker.shiftr.io",
+        "broker": "blinky-lite-02.local",
         "port": "1883",
         "clientid": "Scale1UI",
         "usetls": false,
@@ -211,7 +211,7 @@
         "topic": "",
         "payload": "",
         "payloadType": "date",
-        "repeat": ".05",
+        "repeat": "0.5",
         "crontab": "",
         "once": false,
         "onceDelay": 0.1,
@@ -851,24 +851,9 @@
         "y": 520,
         "wires": [
             [
-                "6e54bd82.5ce6c4",
                 "1a848e3.794f772"
             ]
         ]
-    },
-    {
-        "id": "6e54bd82.5ce6c4",
-        "type": "debug",
-        "z": "465cfd27.107674",
-        "name": "",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "x": 950,
-        "y": 440,
-        "wires": []
     },
     {
         "id": "5e5cc7a3.cd9aa8",
