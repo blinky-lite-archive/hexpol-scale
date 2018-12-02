@@ -85,7 +85,7 @@ module.exports = {
     // By default, the Node-RED UI is available at http://localhost:1880/
     // The following property can be used to specify a different root path.
     // If set to false, this is disabled.
-    //httpAdminRoot: '/admin',
+    httpAdminRoot: '/admin',
 
     // Some nodes, such as HTTP In, can be used to listen for incoming http requests.
     // By default, these are served relative to '/'. The following property
@@ -108,27 +108,27 @@ module.exports = {
 
     // If you installed the optional node-red-dashboard you can set it's path
     // relative to httpRoot
-    //ui: { path: "ui" },
+    ui: { path: "" },
 
     // Securing Node-RED
     // -----------------
     // To password protect the Node-RED editor and admin API, the following
     // property can be used. See http://nodered.org/docs/security.html for details.
-    adminAuth: {
-        type: "credentials",
-        users: [{
-            username: "hexpol",
-            password: "$2a$08$mYKggrrDyqGwGnuGAxv/qO0EKdRgZayziLx08fVhBKqDQFgLgi40y",
-            permissions: "*"
-        }]
-    },
+    //adminAuth: {
+    //    type: "credentials",
+    //    users: [{
+    //        username: "hexpol",
+    //        password: "$2a$08$mYKggrrDyqGwGnuGAxv/qO0EKdRgZayziLx08fVhBKqDQFgLgi40y",
+    //        permissions: "*"
+    //    }]
+    //},
 
     // To password protect the node-defined HTTP endpoints (httpNodeRoot), or
     // the static content (httpStatic), the following properties can be used.
     // The pass field is a bcrypt hash of the password.
     // See http://nodered.org/docs/security.html#generating-the-password-hash
-    httpNodeAuth: {user:"hexpol",pass:"$2a$08$mYKggrrDyqGwGnuGAxv/qO0EKdRgZayziLx08fVhBKqDQFgLgi40y"},
-    httpStaticAuth: {user:"hexpol",pass:"$2a$08$mYKggrrDyqGwGnuGAxv/qO0EKdRgZayziLx08fVhBKqDQFgLgi40y"},
+    //httpNodeAuth: {user:"hexpol",pass:"$2a$08$mYKggrrDyqGwGnuGAxv/qO0EKdRgZayziLx08fVhBKqDQFgLgi40y"},
+    //httpStaticAuth: {user:"hexpol",pass:"$2a$08$mYKggrrDyqGwGnuGAxv/qO0EKdRgZayziLx08fVhBKqDQFgLgi40y"},
 
     // The following property can be used to enable HTTPS
     // See http://nodejs.org/api/https.html#https_https_createserver_options_requestlistener

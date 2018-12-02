@@ -2,7 +2,14 @@
     {
         "id": "465cfd27.107674",
         "type": "tab",
-        "label": "gg-scale-ui-opcua",
+        "label": "Scale1-ui-blinky-lite-ui-opcua",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "64d1ba70.886f94",
+        "type": "tab",
+        "label": "Scale1-ui-blinky-lite-mqtt",
         "disabled": false,
         "info": ""
     },
@@ -20,7 +27,7 @@
             },
             "darkTheme": {
                 "default": "#097479",
-                "baseColor": "#9e9c0a",
+                "baseColor": "#4aed0b",
                 "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
                 "edited": true,
                 "reset": false
@@ -34,11 +41,11 @@
             "themeState": {
                 "base-color": {
                     "default": "#097479",
-                    "value": "#9e9c0a",
+                    "value": "#4aed0b",
                     "edited": true
                 },
                 "page-titlebar-backgroundColor": {
-                    "value": "#9e9c0a",
+                    "value": "#4aed0b",
                     "edited": false
                 },
                 "page-backgroundColor": {
@@ -50,7 +57,7 @@
                     "edited": false
                 },
                 "group-textColor": {
-                    "value": "#e6e30f",
+                    "value": "#7df74e",
                     "edited": false
                 },
                 "group-borderColor": {
@@ -66,7 +73,7 @@
                     "edited": false
                 },
                 "widget-backgroundColor": {
-                    "value": "#9e9c0a",
+                    "value": "#4aed0b",
                     "edited": false
                 },
                 "widget-borderColor": {
@@ -79,7 +86,7 @@
             }
         },
         "site": {
-            "name": "GG-SCALE UI OPCUA",
+            "name": "GG-SCALE-UI",
             "hideToolbar": "false",
             "allowSwipe": "false",
             "dateFormat": "DD/MM/YYYY",
@@ -106,17 +113,50 @@
         "id": "22cd3988.a5e166",
         "type": "ui_group",
         "z": "",
-        "name": "Weight",
-        "tab": "de9d6da2.9de1",
-        "disp": false,
+        "name": "OPC-UA",
+        "tab": "2f7a58c1.1378a8",
+        "order": 2,
+        "disp": true,
         "width": "6",
         "collapse": false
     },
     {
-        "id": "de9d6da2.9de1",
+        "id": "aecbf6d3.8470c8",
+        "type": "mqtt-broker",
+        "z": "",
+        "name": "SMC",
+        "broker": "blinky-lite-02.local",
+        "port": "1883",
+        "clientid": "ScaleUI",
+        "usetls": false,
+        "compatmode": true,
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "closeTopic": "",
+        "closePayload": "",
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": ""
+    },
+    {
+        "id": "bfb4d79e.5b0258",
+        "type": "ui_group",
+        "z": "",
+        "name": "MQTT",
+        "tab": "2f7a58c1.1378a8",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "2f7a58c1.1378a8",
         "type": "ui_tab",
         "z": "",
-        "name": "GG-SCALE UI OPCUA",
+        "name": "Scale 01",
         "icon": "dashboard",
         "order": 1
     },
@@ -433,6 +473,303 @@
         "layout": "col-center",
         "x": 1150,
         "y": 180,
+        "wires": []
+    },
+    {
+        "id": "69c8f40e.488dac",
+        "type": "mqtt in",
+        "z": "64d1ba70.886f94",
+        "name": "",
+        "topic": "SMC/Scale1/Weight",
+        "qos": "0",
+        "broker": "aecbf6d3.8470c8",
+        "x": 130,
+        "y": 60,
+        "wires": [
+            [
+                "61919bc9.fbccf4"
+            ]
+        ]
+    },
+    {
+        "id": "61919bc9.fbccf4",
+        "type": "json",
+        "z": "64d1ba70.886f94",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 290,
+        "y": 60,
+        "wires": [
+            [
+                "a711bc82.85f8a"
+            ]
+        ]
+    },
+    {
+        "id": "a22ea59e.1a6cf8",
+        "type": "ui_gauge",
+        "z": "64d1ba70.886f94",
+        "name": "Weight",
+        "group": "bfb4d79e.5b0258",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "{{msg.label}}",
+        "label": "",
+        "format": "{{value}}",
+        "min": "-300",
+        "max": "300",
+        "colors": [
+            "#ca3838",
+            "#00b500",
+            "#ca3838"
+        ],
+        "seg1": "-150",
+        "seg2": "150",
+        "x": 730,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "888e17ce.5b04e8",
+        "type": "ui_template",
+        "z": "64d1ba70.886f94",
+        "group": "bfb4d79e.5b0258",
+        "name": "Toggle Unit",
+        "order": 5,
+        "width": "0",
+        "height": "0",
+        "format": "<md-button \n    ng-style=\"{color:'black', background:'lime'}\"\n    ng-disabled='false'\n    ng-click=\"send({payload:true})\">Toggle Unit</md-button>\n",
+        "storeOutMessages": false,
+        "fwdInMessages": false,
+        "templateScope": "local",
+        "x": 110,
+        "y": 320,
+        "wires": [
+            [
+                "3a43cd93.d03e82"
+            ]
+        ]
+    },
+    {
+        "id": "3a43cd93.d03e82",
+        "type": "mqtt out",
+        "z": "64d1ba70.886f94",
+        "name": "",
+        "topic": "SMC/Scale1/ToggleUnit",
+        "qos": "0",
+        "retain": "false",
+        "broker": "aecbf6d3.8470c8",
+        "x": 330,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "171be43a.335ecc",
+        "type": "ui_template",
+        "z": "64d1ba70.886f94",
+        "group": "bfb4d79e.5b0258",
+        "name": "Zero Scale",
+        "order": 6,
+        "width": "0",
+        "height": "0",
+        "format": "<md-button \n    ng-style=\"{color:'black', background:'lime'}\"\n    ng-disabled='false'\n    ng-click=\"send({payload:true})\">Zero Scale</md-button>\n",
+        "storeOutMessages": false,
+        "fwdInMessages": false,
+        "templateScope": "local",
+        "x": 110,
+        "y": 380,
+        "wires": [
+            [
+                "8c503868.4a7d38"
+            ]
+        ]
+    },
+    {
+        "id": "8c503868.4a7d38",
+        "type": "mqtt out",
+        "z": "64d1ba70.886f94",
+        "name": "",
+        "topic": "SMC/Scale1/ZeroScale",
+        "qos": "0",
+        "retain": "false",
+        "broker": "aecbf6d3.8470c8",
+        "x": 330,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "a28a63aa.f717d",
+        "type": "ui_text",
+        "z": "64d1ba70.886f94",
+        "group": "bfb4d79e.5b0258",
+        "order": 1,
+        "width": "6",
+        "height": "1",
+        "name": "Valid Data",
+        "label": "Valid Data",
+        "format": "<font color={{(msg.payload == false) ? 'red' : 'lime'}} size=\"6\" ><i class=\"fa fa-circle\"></i></font>",
+        "layout": "row-center",
+        "x": 750,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "a94082e1.ab706",
+        "type": "ui_chart",
+        "z": "64d1ba70.886f94",
+        "name": "Time chart",
+        "group": "bfb4d79e.5b0258",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "label": "",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": "10",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "60",
+        "cutout": 0,
+        "useOneColor": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "useOldStyle": false,
+        "x": 750,
+        "y": 100,
+        "wires": [
+            [],
+            []
+        ]
+    },
+    {
+        "id": "7f4e20ee.2a12a",
+        "type": "mqtt in",
+        "z": "64d1ba70.886f94",
+        "name": "",
+        "topic": "SMC/Scale1/DataValid",
+        "qos": "0",
+        "broker": "aecbf6d3.8470c8",
+        "x": 140,
+        "y": 180,
+        "wires": [
+            [
+                "463fa51d.dbd5cc"
+            ]
+        ]
+    },
+    {
+        "id": "463fa51d.dbd5cc",
+        "type": "json",
+        "z": "64d1ba70.886f94",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 330,
+        "y": 180,
+        "wires": [
+            [
+                "a28a63aa.f717d"
+            ]
+        ]
+    },
+    {
+        "id": "ad6c0008.b022b",
+        "type": "mqtt in",
+        "z": "64d1ba70.886f94",
+        "name": "",
+        "topic": "SMC/Scale1/Unit",
+        "qos": "0",
+        "broker": "aecbf6d3.8470c8",
+        "x": 120,
+        "y": 120,
+        "wires": [
+            [
+                "a711bc82.85f8a"
+            ]
+        ]
+    },
+    {
+        "id": "a711bc82.85f8a",
+        "type": "function",
+        "z": "64d1ba70.886f94",
+        "name": "Add Unit and Weight",
+        "func": "if (msg.topic == 'SMC/Scale1/Unit')\n{\n    context.set('unit', msg.payload);\n    return null;\n}\nvar unit = context.get('unit');\nif (unit == undefined) unit = ' ';\nreturn {'topic':msg.topic, 'payload':msg.payload, 'label':unit};",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 500,
+        "y": 80,
+        "wires": [
+            [
+                "a22ea59e.1a6cf8",
+                "a94082e1.ab706"
+            ]
+        ]
+    },
+    {
+        "id": "b5f25371.2240a",
+        "type": "mqtt in",
+        "z": "64d1ba70.886f94",
+        "name": "",
+        "topic": "SMC/Scale1/TimeStamp",
+        "qos": "0",
+        "broker": "aecbf6d3.8470c8",
+        "x": 150,
+        "y": 240,
+        "wires": [
+            [
+                "cf3ba177.c828a"
+            ]
+        ]
+    },
+    {
+        "id": "cf3ba177.c828a",
+        "type": "function",
+        "z": "64d1ba70.886f94",
+        "name": "Convert to Date and Time",
+        "func": "var timeStamp = new Date(Number(msg.payload));\nmsg.payload = timeStamp.toLocaleString(); \nreturn {'topic':'date','payload':timeStamp.toISOString()};",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 410,
+        "y": 240,
+        "wires": [
+            [
+                "892c9f17.fdb07"
+            ]
+        ]
+    },
+    {
+        "id": "892c9f17.fdb07",
+        "type": "ui_text",
+        "z": "64d1ba70.886f94",
+        "group": "bfb4d79e.5b0258",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "name": "Date",
+        "label": "Time Stamp",
+        "format": "<font color='lime'>{{msg.payload}}</font>",
+        "layout": "col-center",
+        "x": 740,
+        "y": 240,
         "wires": []
     }
 ]
